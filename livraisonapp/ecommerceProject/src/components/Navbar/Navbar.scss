@@ -1,0 +1,218 @@
+.mobile-navbar {
+  // background: linear-gradient(122deg, #AFCBFF 0%, #191970 100%);
+  background: linear-gradient(122deg, #AFCBFF 0%, #191970 100%);
+
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  .navbar-brand-link {
+    color: white;
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 0.9;
+      color: white;
+    }
+  }
+  
+  .nav-link {
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 0 0.15rem;
+    transition: all 0.2s ease;
+    position: relative;
+    font-weight: 500;
+    
+    &:hover {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    
+    &.active {
+      color: white;
+      font-weight: 600;
+      
+      &:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 1rem;
+        right: 1rem;
+        height: 2px;
+        background-color: white;
+      }
+    }
+  }
+  
+  .navbar-toggler-custom {
+    border: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: background-color 0.2s ease;
+    padding: 0.3rem 0.5rem;
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+      outline: none;
+    }
+    
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+  }
+  
+  .cart-icon-wrapper {
+    cursor: pointer;
+    margin-right: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+    
+    .user-name {
+      color: white;
+      font-weight: 500;
+      margin-left: 0.5rem;
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  
+  .login-button {
+    background-color: white;
+    color: #191970;
+    border-radius: 4px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #0e3e75;
+    }
+  }
+  
+  .navbar-collapse {
+    margin-top: 0.5rem;
+  }
+}
+
+// Existing tooltip styles with some improvements
+.tooltipsStyle {
+  padding: 0.75rem;
+  font-size: 15px;
+  color: #180808;
+  background-color: white;
+  z-index: 10000;
+  width: auto;
+  min-width: 200px;
+  overflow-x: hidden;
+  height: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+}
+
+.cartToolTip {
+  padding: 0.75rem;
+  font-size: 15px;
+  color: #180808;
+  background-color: white;
+  z-index: 10000;
+  width: 40%;
+  overflow-x: hidden;
+  height: 50vh;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+}
+
+.emptyCartToolTip {
+  padding: 0.75rem;
+  font-size: 15px;
+  color: #180808;
+  background-color: white;
+  z-index: 10000;
+  width: 40%;
+  overflow-x: hidden;
+  height: 10vh;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+}
+
+.loading {
+  .rs-badge-content, 
+  .rs-badge-independent {
+    background-color: transparent !important;
+    background: transparent !important;
+    padding: 0;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 0;
+    color: white;
+  }
+}
+
+// Media queries for mobile responsiveness
+@media (max-width: 991px) {
+  .mobile-navbar {
+    .nav-link {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      &.active:after {
+        display: none;
+      }
+    }
+    
+    .navbar-collapse {
+      background-color: #0e3e75;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0;
+      margin-top: 1rem;
+    }
+    
+    .mobile-nav-actions {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .cartToolTip, 
+  .emptyCartToolTip {
+    width: 90%;
+    right: 5%;
+    left: 5%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .cartToolTip, 
+  .emptyCartToolTip {
+    width: 70%;
+    right: 15%;
+    left: 15%;
+  }
+}

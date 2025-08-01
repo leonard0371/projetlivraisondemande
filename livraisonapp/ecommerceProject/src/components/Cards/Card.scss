@@ -1,0 +1,36 @@
+$primary-color: rgba(49,83,154,1);
+
+.card-title{
+    padding : 0;
+    font-size: 16px;
+    color: rgb(39, 39, 39);
+
+}
+.card-main{
+    width: "11rem";
+    height:"11rem";
+    margin:"15px";
+    text-align:"left";
+    padding: 3px;
+    cursor: pointer;
+    background-color: white;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.card-img-top{
+    // border : 0.5px solid black;
+    height: 11rem;
+}
+.card-text{
+    color: black;
+    
+}
+// .card-buttons{
+//     color: rgb(97, 97, 97);
+// }
+.button{
+    margin-left: auto;
+    color: red;
+    &:hover{
+        color:$primary-color;
+        }
+}

@@ -1,0 +1,130 @@
+$primary-color: rgba(49, 83, 154, 1);
+
+body{
+    // background-color: #F5F6F6;
+    background-color: #ffffff;
+}
+.heading {
+    color: #AA2F33;
+}
+
+// .vendor-container {
+//     justify-content: center;
+//     align-items: center;
+//     background-color: #e6e6e6;
+//     width: 80%;
+//     border-radius: 20px;
+//     padding-top: 10px;
+//     padding: 30px;
+// }
+
+//Rivah
+.vendor-container {
+    width: 80% !important;
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    padding: 40px !important;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); // Ajout d’un effet d’ombre
+   
+  }
+
+  .vendor-container input, .vendor-container select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  //Rivah
+  button {
+    background: #31539a;
+    color: white ;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.3s ease;
+  
+    &:hover {
+    //   background: #1f3a7a;
+    background: #1663a1;
+    }
+  }
+  
+
+.grid-container {
+    width: 96% !important;
+    // box-shadow: rgba(128, 128, 128, 0.3) 3px 3px 3px 3px;
+    box-shadow: rgba(128, 128, 128, 0.7) 0px 3px 3px;
+    margin-left: 2.3%;
+    padding: 5px;
+    background-color: white;
+
+}
+
+.vender-container {
+    align-items: center;
+}
+.dashboard-stats{
+    margin-left: 30px;
+    .stats{
+        height: 150px;
+        width:200px;
+        background-color: white;
+    }
+}
+.filter-bar-vendor {
+    height: 11%;
+    box-shadow: rgba(128, 128, 128, 0.7) 0px 3px 3px;
+    padding: 10px;
+    margin-inline: 3vh;
+    margin: 2vh 5vh;
+    background-color: white;
+    width: 96%;
+    padding-left: 20px;
+}
+
+.tats-bar-vendor {
+    height: 20%;
+    // box-shadow: rgba(128, 128, 128, 0.7) 0px 3px 3px;
+    padding: 15px;
+    // margin-inline: 3vh;
+    margin: 2vh 5vh;
+    background-color: white;
+    width: 96%;
+}
+
+.stats-cards{
+    padding: 10px;
+    border: 1px solid #D3D3D3;
+    border-radius: 10px;
+}
+
+.stats-icon{
+    width: 100px;
+    // border: 1px solid #D3D3D3;
+    border-radius: 5px;
+    padding-left: 10px;
+    // margin-bottom: 30px;
+}
+.cross-icon{
+    font-size: 28px;
+    margin-left: 70%;
+}
+
+@media (max-width:768px){
+    .filter-bar-vendor{
+        max-height: 14%;
+    box-shadow: rgba(128, 128, 128, 0.7) 0px 3px 3px;
+    padding: 10px;
+    // margin-inline: 3vh;
+    // align-items: center;
+    background-color: white;
+    margin: 2vh;
+    width: 96%;
+    }
+    .heading{
+    font-size: 15px;
+
+    }
+}

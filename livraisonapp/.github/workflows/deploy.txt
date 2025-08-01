@@ -1,0 +1,91 @@
+name: Deploy Backend & Frontend on Push to production-branch
+
+on:
+  push:
+    branches:
+      - production-branch
+
+jobs:
+  deploy:
+    name: Deploy to Production Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add remote host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p 22 192.169.176.214 >> ~/.ssh/known_hosts
+
+      - name: Deploy Backend & Frontend via SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no -p 22 montreal@192.169.176.214 << 'EOF'
+            set -e
+
+            echo ">>> Création du répertoire temporaire"
+            rm -rf /tmp/deployment
+            mkdir -p /tmp/deployment
+            cd /tmp/deployment
+
+            echo ">>> Clonage du dépôt"
+            git clone --depth 1 --filter=blob:none --branch production-branch git@github.com:leonard0371/City-Haven.git
+            cd City-Haven
+
+            echo ">>> Déploiement du backend"
+            git sparse-checkout init --cone
+            git sparse-checkout set MontrealBackend
+            cd MontrealBackend
+
+            echo ">>> Installation des dépendances et compilation TypeScript"
+            npm install
+            npm run build
+
+            echo ">>> Préparation du dossier backend en production"
+            mkdir -p /var/www/backendAPI
+
+            echo ">>> Nettoyage du dossier sauf .env"
+            find /var/www/backendAPI -mindepth 1 ! -name '.env' -exec rm -rf {} + 2>/dev/null || true
+
+            echo ">>> Copie des fichiers du backend"
+            cp -r dist/* /var/www/backendAPI/
+            cp package.json /var/www/backendAPI/
+            cp package-lock.json /var/www/backendAPI/ || true
+            cp tsconfig.json /var/www/backendAPI/
+
+            echo ">>> Installation des dépendances en production"
+            cd /var/www/backendAPI
+            npm install --production
+
+            echo ">>> Redémarrage du backend avec PM2"
+            pm2 restart backendAPI || pm2 start dist/app.js --name backendAPI
+            
+
+            echo ">>> Déploiement du frontend"
+            cd /tmp/deployment/City-Haven
+            git sparse-checkout set ecommerceProject
+            cd ecommerceProject
+
+            echo ">>> Installation & build du frontend"
+            npm install
+            npm run build
+
+            echo ">>> Déploiement dans /var/www/montrealwebapp"
+            mkdir -p /var/www/montrealwebapp
+            rm -rf /var/www/montrealwebapp/*
+            cp -r dist/* /var/www/montrealwebapp/
+
+            echo ">>> Démarrage du frontend avec PM2 (serve)"
+            pm2 restart montrealwebapp || pm2 start "serve -s /var/www/montrealwebapp" --name montrealwebapp
+
+            echo ">>> Nettoyage temporaire"
+            rm -rf /tmp/deployment
+
+            echo " Déploiement terminé avec succès"
+          EOF

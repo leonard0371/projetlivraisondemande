@@ -1,0 +1,56 @@
+
+.tabsContainer {
+  overflow-x: auto;
+  white-space: nowrap;
+
+  .tab-component-style {
+    // margin-bottom: 5px;
+    margin-top: 4%;
+  }
+
+  ul {
+    margin-left: 2.2%;
+    width: max-content !important;
+    background-color: transparent;
+    margin-top: 8px;
+    padding-right: 18px;
+    border-bottom: none;
+
+
+    li {
+      background-color: white;
+      
+
+      // border-right: 2px solid black;
+      button {
+        padding: 10px 25px;
+        font-weight: 400;
+        // font-size: 10px;
+        border: 0px;
+        font-weight: bold;
+        max-width: 300px;
+        // color:$primary-color;
+        border-top-right-radius: 0px !important;
+        border-top-left-radius: 0px !important;
+       
+
+        &:hover {
+          background-color: rgba(211, 211, 211, 0.2);
+          border-radius: 0px !important;
+        }
+      }
+
+      .nav-link {
+        color: rgb(123, 120, 120);
+      }
+
+      .active {
+        border-bottom: 2px solid #AA2F33 !important;
+        background-color: white;
+        border-radius: 0px;
+        color: #AA2F33 !important;
+        
+      }
+    }
+  }
+}

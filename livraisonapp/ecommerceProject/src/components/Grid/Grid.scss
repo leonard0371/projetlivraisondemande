@@ -1,0 +1,219 @@
+// @import "../../variables.scss";
+
+.MuiTableCell-root {
+  // padding: 6px;
+  font-weight: 600;
+//   border-bottom: $inputBottomColor;
+}
+.ag-root-wrapper {
+  border: none !important;
+}
+
+.expired{
+  color: red;
+}
+.ag-cell-focus,
+.ag-cell-no-focus {
+  border: none !important;
+}
+.grid-div {
+//   border-top: 1px solid $background-color;
+}
+.ag-cell-value {
+  font-size: 0.85rem !important;
+}
+
+.ag-header {
+  height: 35px !important;
+  min-height: 26px !important;
+}
+
+.ag-header-cell {
+  display: initial !important;
+}
+.ag-header.ag-header-allow-overflow .ag-header-row {
+  background-color: #ffffff !important;
+}
+.ag-header-cell-label {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  // justify-content: center !important;
+}
+
+.ag-header-cell:not(.ag-header-cell-auto-height) .ag-header-cell-comp-wrapper {
+  height: initial !important;
+}
+
+// .ag-theme-alpine .ag-row .ag-theme-alpine-dark .ag-row {
+//   height: 28px !important;
+// }
+// .ag-row-even {
+//   height: 28px !important;
+// }
+// .ag-row-odd {
+//   height: 28px !important;
+// }
+/* This CSS is to not apply the border for the column having 'no-border' class */
+.no-border.ag-cell:focus {
+  border: none !important;
+  outline: none;
+}
+
+.ag-cell-focus .ag-cell {
+  border: none !important;
+  outline: none !important;
+}
+
+.ag-root ::-webkit-scrollbar {
+  width: 5px !important;
+  padding-top: 2px !important;
+  height: 0px !important;
+}
+
+.ag-root ::-webkit-scrollbar-thumb {
+//   background: $primary-color !important;
+}
+
+.ag-root ::-webkit-scrollbar-track-piece {
+  background: white;
+} 
+.ag-theme-alpine{
+  height: 62.6vh !important;
+}
+
+.ag-theme-alpine .ag-row {
+  padding-left: 1px !important;
+  border-left: 3px solid white;
+  // height: 2.5rem !important;
+}
+.ag-row{
+  min-height:6vh;
+  max-height:12vh;
+}
+.ag-row-odd
+  .ag-row-even
+  .ag-row-no-focus
+  .ag-row
+  .ag-row-position-absolute
+  .ag-row-not-inline-editing {
+  height: 2.5rem !important;
+}
+.ag-theme-alpine .ag-row-hover {
+//   border-left: 3px solid $layout-contrast-color;
+}
+
+.ag-body-horizontal-scroll .ag-hidden {
+  display: none !important;
+  overflow-x: hidden !important;
+}
+.ag-header-cell-text {
+//   color: $primary-color !important;
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  // align-items: center;
+  padding-top: 4px;
+  padding-right: 1.5%;
+  padding-bottom: 4px;
+  // margin-bottom: 100px;
+  // border-bottom: 1px solid $background-color;
+  // border-left: 1px solid $background-color;
+  // border-right: 1px solid $background-color;
+  background-color: #ffffff;
+
+  .paging-info {
+    // width: 186px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: 20px;
+
+    .page-no {
+      font-size: 11px;
+      font-weight: 600;
+      padding-top: 4px;
+      padding-right: 11px;
+      padding-left: 12px;
+    }
+
+    .disabled-button {
+      pointer-events: none;
+    }
+    .icon-button-hover :hover {
+      background-color: #e2e2e2fb;
+      border-radius: 50%;
+      // padding: 5px;
+      // margin-top: 5px;
+    }
+    .move-to-first-icon {
+      padding-right: 5px;
+      font-weight: 400;
+    }
+
+    .move-to-last-icon {
+      padding-left: 5px;
+    }
+
+    .page-in-numbers {
+      font-weight: 800;
+    }
+  }
+}
+
+.header-left {
+  .ag-header-cell-label {
+    justify-content: flex-start !important;
+  }
+}
+
+.header-right {
+  .ag-header-cell-label {
+    justify-content: flex-end !important;
+    padding-right: 20px;
+  }
+}
+
+.ag-row-focus {
+  z-index: 1 !important;
+}
+.ag-row-no-focus {
+  z-index: 0 !important;
+}
+.ag-body-horizontal-scroll {
+  display: none !important;
+}
+// .ag-row {
+//   height: 10vh !important;
+// }
+.ag-root-wrapper-body.ag-layout-normal {
+  min-height: 10vh;
+  //Will uncomment for dynamic height
+  // height: max-content !important;
+  height: 50vh;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.ag-overlay-panel{
+  .ag-overlay-wrapper {
+    // display: none !important;
+      // position: relative !important;
+      // justify-content: center !important;
+      // align-items: flex-start !important;
+      // margin-top: 55px !important;
+  }
+}
+
+@media only screen and (max-height: 768px) {
+  .ag-theme-alpine{
+    height: 68vh !important;
+  }
+}
+@media screen and (max-height:768px) {
+  .patientScreen{
+    height: 50vh !important;
+  }
+}
+.skeletoon-loading{
+  color: #ff0000 !important;
+}

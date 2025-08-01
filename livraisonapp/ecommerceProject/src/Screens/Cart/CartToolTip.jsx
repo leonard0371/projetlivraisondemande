@@ -1,0 +1,457 @@
+import React, { useEffect, useState } from "react";
+import { Col, Container, Row, Card } from "react-bootstrap";
+import "./Cartscreen.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { MdDelete } from "react-icons/md";
+import { formatPrice } from "../../utilitaire/utils";
+import {
+  addToCart,
+  clearCart,
+  setCart,
+  setCartItems,
+  setIsLoading,
+} from "../../redux/reducers/cartSlice";
+import { useAddData, useDeleteData, useGetDataByID } from "../../api/apiCalls";
+import { endPoints } from "../../api/api";
+import ReactLoading from "react-loading";
+import {
+  setAlertTitle,
+  setErrorAlert,
+  setSuccessAlert,
+} from "../../redux/reducers/patientSlice";
+import { useQueryClient } from "react-query";
+import { Navigate, useNavigate } from "react-router-dom";
+
+const CartToolTip = ({ userCart, setUserCart, getUserCart, checkOutItems }) => {
+  const items = useSelector((e) => e.cart.items);
+  // console.log("itemsitemsitems", items);
+  console.log("items", items);
+  const [cartData, setCartData] = useState([]);
+  const TotalCheckout = items.reduce((n, { subTotal }) => n + subTotal, 0);
+  const dispatch = useDispatch();
+  const API_URL = import.meta.env.VITE_APP_API_URL;
+  const screenSize = window.innerWidth;
+  const [screenWidth, setscreenWidth] = useState(window.innerWidth);
+  const userData = useSelector((e) => e.show.userData);
+  const userId = localStorage.getItem("userId");
+  const isAuthenticated = useSelector((e) => e.show.isAuthenticated);
+  const [DeletedProductID, setDeletedProductID] = useState(0);
+  const [isDeleteDocument, setIsDeleteDocument] = useState(false);
+  const userItems = useSelector((e) => e.cart.userCart);
+  const isLoading = useSelector((e) => e.cart.isLoading);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const role = localStorage.getItem("Role");
+
+ 
+  useEffect(() => {
+    const handleResize = () => {
+      setscreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const productItems2 =
+    items?.length > 0 &&
+    items.map((item) => {
+      console.log('item brute', items)
+      return {
+        name: item?.name,
+        price: formatPrice(item?.price),
+        productId: item?.productId,
+        vendorId: item?.vendorId,
+        quantity: item?.quantity,
+        subTotal: formatPrice(item?.subTotal),
+      };
+    });
+  const productItems =
+    items?.length > 0 &&
+    productItems2.filter((item) => item.productId !== undefined);
+
+    console.log('product Items 2', productItems2)
+ 
+
+  const deleteProducts = useDeleteData(
+    [{ paramName: "id", paramValue: DeletedProductID }],
+    ["DeleteCartProduct"],
+    endPoints.deleteCartProducts,
+    isDeleteDocument
+  );
+  useEffect(() => {
+    if (isDeleteDocument) {
+      setIsDeleteDocument(false);
+    }
+  }, [isDeleteDocument]);
+
+  const handlePayments = async () => {
+    // console.log('product Items', productItems)
+    if (userId !== null && userData) {
+  
+      dispatch(setIsLoading(true));
+      try {
+        const response = await fetch(
+          API_URL + "/api/stripe/create-checkout-session",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ productItems }),
+          }
+        );
+        if (!response.ok) {
+          // throw new Error("Network response was not ok");
+          const errorData = await response.json();
+          dispatch(setErrorAlert(true));
+          dispatch(setAlertTitle(errorData.error || "Payment error, please try again."));
+          throw new Error(errorData.error || "Payment error, please try again.");
+        }
+
+       
+        const { url } = await response.json();
+        console.log('response', {url})
+        
+        dispatch(setIsLoading(false));
+
+        // window.open(url, "_blank"); 
+        window.location.href = url; 
+      } catch (error) {
+        // console.error('Error:', error);
+        // Handle error (e.g., show error message to user)
+        dispatch(setIsLoading(false));
+        dispatch(setErrorAlert(true));
+        // dispatch(setAlertTitle("An error occurred while processing your payment. Please try again."));
+        dispatch(setAlertTitle(error.message));
+      }
+    } else {
+      navigate("/login");
+     
+    }
+  };
+
+
+  const handleRemoveUserItem = (product) => {
+    // console.log(product?.objectId, "123455654");
+    console.log(product, "dwalfjfiaj");
+    if (userId) {
+      setDeletedProductID(product);
+      setIsDeleteDocument(true);
+
+      // deleteProducts?.refetch();
+    } else {
+      // console.log(product,"dwalffffjfiaj")
+      // console.log(items,"Dwafafwafwafgwagag")
+      const filterItems = items?.filter(
+        (filterProduct) => filterProduct.productId !== product
+      );
+      dispatch(setCart(filterItems));
+      setUserCart(filterItems);
+    }
+  };
+  useEffect(() => {
+    if (deleteProducts?.data) {
+      setIsDeleteDocument(false);
+      setDeletedProductID(0);
+      getUserCart.refetch();
+      // queryClient.invalidateQueries('getUserCart');
+      if (isDeleteDocument) {
+        dispatch(setSuccessAlert(true));
+        dispatch(setAlertTitle("Product Removed Successfully"));
+      }
+      //   setIsLoading(false)
+    }
+  }, [deleteProducts?.data]);
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
+  // console.log(items, "itemsitemsitems");
+  const calculateTotals = (items) => {
+    let grandTotal = 0;
+
+    const updatedItems = items.map((item) => {
+      const subTotal = item.price * item.quantity;
+      grandTotal += subTotal;
+      // console.log(grandTotal, "grandTotal");
+      return {
+        ...item,
+        subTotal,
+      };
+    });
+
+    return {
+      updatedItems,
+      grandTotal,
+    };
+  };
+  useEffect(() => {
+    if (role !== "driver" && userId !== null) {
+      // ... existing cart logic ...
+    } else {
+      setUserCart(items);
+    }
+  }, [userData, isAuthenticated, getUserCart?.data, getUserCart?.isFetching]);
+
+  return (
+    <Container fluid>
+      <Col>
+        {getUserCart.isFetching || isLoading ? (
+          <div style={{ marginLeft: "40%" }} className="mt-5">
+            <ReactLoading
+              type={"spinningBubbles"}
+              color={"#AA2F33"}
+              height={40}
+              width={40}
+            />
+          </div>
+        ) : (
+          <>
+            {/* <Card className=" mb-4"> */}
+            {/* {console.log(userCart, "dWADDW864")} */}
+            {userCart.length === 0
+              ? "Cart is Empty"
+              : userCart?.map((product, key) => {
+                  {
+                    /* {
+                    console.log(product, "pdsfroductproductproduct"); 
+                  } */
+                  }
+                  return (
+                    <div className="" key={key}>
+                      <div className="row align-items-centre">
+                        {screenSize < 800 ? (
+                          <>
+                            <Row className="cardRow border-bottom">
+                              <Col sm={2} md={2} lg={2} xs={2}>
+                                <img
+                                  src={`${API_URL}${product?.images}`}
+                                  className="img-fluid"
+                                />
+                              </Col>
+
+                              <Col sm={8} md={8} lg={8} xs={8} className="ms-4">
+                                <Row>
+                                  <Col>
+                                    <span className="fw-bold product-name">
+                                      {product?.name}
+                                    </span>
+                                  </Col>
+
+                                  {/* </div> */}
+                                </Row>
+                                <Row>
+                                  <Col>
+                                    <span className="small text-muted">
+                                      Quantity
+                                    </span>
+                                  </Col>
+                                  <Col>
+                                    <span className="fw-normal mb-0 ">
+                                      {product?.quantity}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col>
+                                    <p className="small text-muted">Price</p>
+                                  </Col>
+                                  <Col>
+                                    <p
+                                      className="lead fw-normal mb-0"
+                                      style={{ fontSize: "15px" }}
+                                    >
+                                      ${formatPrice(product?.price)}
+                                    </p>
+                                  </Col>
+                                </Row>
+                              </Col>
+                              <Card>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  xs={12}
+                                  className=" d-flex justify-content-left p-1"
+                                >
+                                  <Row>
+                                    {/* <p className="small text-muted mb-4 pb-2">Remove Item</p> */}
+                                    <Col sm={2} md={2} lg={2} xs={2}>
+                                      <span style={{ cursor: "pointer" }}>
+                                        <MdDelete
+                                          size={"20px"}
+                                          color="red"
+                                          onClick={() =>
+                                            handleRemoveUserItem(
+                                              userId
+                                                ? product?.objectId
+                                                : product?.productId
+                                            )
+                                          }
+                                        />
+                                      </span>
+                                    </Col>
+                                    <Col sm={9} md={9} lg={9} xs={9}>
+                                      Total :
+                                      {" " +
+                                        "$" +
+                                        // product.quantity * product.price}
+                                        formatPrice(Math.floor(product.quantity * product.price * 100) / 100)}
+                                    </Col>
+                                    {/* <Button text={"Remove"} onClick={()=>handleRemoveitem(product?.id)}/> */}
+                                  </Row>
+                                </Col>
+                              </Card>
+                            </Row>
+                          </>
+                        ) : (
+                          <>
+                            <Row className="cardRow border-bottom">
+                              <Col sm={2} md={2} lg={2} xs={2}>
+                                <img
+                                  src={`${API_URL}${product?.images}`}
+                                  className="img-fluid"
+                                  alt=""
+                                />
+                              </Col>
+
+                              <Col sm={8} md={8} lg={8} xs={8} className="ms-4">
+                                <Row>
+                                  <Col>
+                                    <span className="fw-bold product-name">
+                                      {product?.name}
+                                    </span>
+                                  </Col>
+
+                                  {/* </div> */}
+                                </Row>
+                                <Row>
+                                  <Col>
+                                    <span className="small text-muted">
+                                      Quantity
+                                    </span>
+                                  </Col>
+                                  <Col>
+                                    <span className="fw-normal mb-0 ">
+                                      {product?.quantity}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col>
+                                    <p className="small text-muted">Price</p>
+                                  </Col>
+                                  <Col>
+                                    <p
+                                      className="lead fw-normal mb-0"
+                                      style={{ fontSize: "15px" }}
+                                    >
+                                      ${formatPrice(product?.price)}
+                                    </p>
+                                  </Col>
+                                </Row>
+                              </Col>
+                              <Card>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  xs={12}
+                                  className=" d-flex justify-content-left p-1"
+                                >
+                                  <Row>
+                                    {/* <p className="small text-muted mb-4 pb-2">Remove Item</p> */}
+                                    <Col sm={2} md={2} lg={2} xs={2}>
+                                      <span style={{ cursor: "pointer" }}>
+                                        <MdDelete
+                                          size={"20px"}
+                                          color="red"
+                                          onClick={() =>
+                                            handleRemoveUserItem(
+                                              userId
+                                                ? product?.objectId
+                                                : product?.productId
+                                            )
+                                          }
+                                        />
+                                      </span>
+                                    </Col>
+                                    <Col sm={9} md={9} lg={9} xs={9}>
+                                      Total :
+                                      {" " +
+                                        "$" +
+                                        // formatPrice(product.quantity * product.price)}
+                                        formatPrice(Math.floor(product.quantity * product.price * 100) / 100)}
+                                    </Col>
+                                    {/* <Button text={"Remove"} onClick={()=>handleRemoveitem(product?.id)}/> */}
+                                  </Row>
+                                </Col>
+                              </Card>
+                            </Row>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+            <div
+              className=""
+              style={{
+                position: "sticky",
+                bottom: 2,
+                width: "90%",
+                backgroundColor: "white",
+              }}
+            >
+              {/* <Card > */}
+              {userCart.length > 0 && (
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xs={12}
+                  className=" d-flex justify-content-right p-1"
+                >
+                  {/* <div> */}
+                  <p className="ps-1">
+                    <span className="fw-bold">Order Total :</span>{" "}
+                    {"$" + formatPrice(calculateTotals(userCart).grandTotal)}{" "}
+                  </p>
+                  {/* </div> */}
+                </Col>
+              )}
+
+              {userCart?.length <= 0 ? (
+                ""
+              ) : (
+                <button
+                  type="button"
+                  data-mdb-button-init
+                  data-mdb-ripple-init
+                  className="btn btn-primary btn-sm  mb-2"
+                  onClick={(e) => handlePayments(e)}
+                  disabled={
+                    userCart?.length == 0 ||
+                    userCart.length === undefined ||
+                    isLoading
+                  }
+                >
+                  Checkout
+                </button>
+              )}
+              {/* </Card> */}
+            </div>
+
+            {/* </Card> */}
+          </>
+        )}
+      </Col>
+    </Container>
+  );
+};
+
+export default CartToolTip;

@@ -1,0 +1,124 @@
+.home-screen {
+    .hero-section {
+      min-height: 80vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                  url('/api/placeholder/1920/1080') center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      margin-top: -56px; // Adjust based on your navbar height
+      
+      .hero-title {
+        font-size: 5rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 1rem;
+        letter-spacing: 4px;
+        transform: skew(-5deg);
+      }
+      
+      .hero-subtitle {
+        font-size: 1.5rem;
+        color: white;
+        margin-bottom: 2rem;
+      }
+      
+      .cta-button {
+        background-color: #AA2F33;
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        
+        &:hover {
+          background-color: darken(#AA2F33, 10%);
+          transform: translateY(-2px);
+          transition: all 0.3s ease;
+        }
+      }
+    }
+  
+    .info-section {
+      padding: 4rem 0;
+      
+      .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: #333;
+      }
+      
+      .info-content {
+        h3 {
+          font-size: 1.8rem;
+          margin-bottom: 1.5rem;
+        }
+        
+        ol {
+          padding-left: 1.2rem;
+          
+          li {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+          }
+        }
+      }
+      
+      .info-image {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        
+        img {
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+        }
+      }
+      
+      .feature-list {
+        list-style: none;
+        padding: 0;
+        
+        li {
+          font-size: 1.1rem;
+          margin-bottom: 1rem;
+          padding-left: 1.5rem;
+          position: relative;
+          
+          &:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #AA2F33;
+          }
+        }
+      }
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    .home-screen {
+      .hero-section {
+        .hero-title {
+          font-size: 3rem;
+        }
+        
+        .hero-subtitle {
+          font-size: 1.2rem;
+        }
+      }
+      
+      .info-section {
+        .section-title {
+          font-size: 2rem;
+        }
+      }
+    }
+  }

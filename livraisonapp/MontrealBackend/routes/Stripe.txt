@@ -1,0 +1,491 @@
+
+import express, { Request, Response, Router } from 'express';
+import Stripe from 'stripe';
+import { ProductModel } from '../models/Iproducts';
+import { OrderModel } from '../models/Order';
+import { VendorPaymentModel } from '../models/vendorPayment';
+import { ClientSession } from 'mongodb'; // Importer ClientSession
+import { error } from 'console';
+import mongoose from "mongoose";
+import { Types } from 'mongoose';
+
+require('dotenv').config();
+
+const stripeRouter: Router = express.Router();
+const HOME_URL = process.env.HOME_URL;
+const stripe = new Stripe(process.env.Stripe_Secret_Key as string, {});
+const MARKETPLACE_FEE_PERCENTAGE = 0.08;  // 8%
+const STRIPE_PERCENTAGE = 0.029; // 2.9%
+const STRIPE_FIXED_FEE = 0.30;  // $0.30 fixed fee
+
+
+
+type VendorItem = {
+  name: string;
+  price: number;
+  quantity: number;
+  subTotal: number;
+};
+
+type VendorGroup = {
+  vendorId: string;
+  items: VendorItem[];
+  total: number;
+};
+
+
+export async function processTestPayment(amount: number, vendorStripeAccount: string) {
+    try {
+        // Step 1: Calculate marketplace commission
+        const marketplaceFee = Math.round(amount * MARKETPLACE_FEE_PERCENTAGE); 
+
+        // Step 2: Vendor's earnings before Stripe fee
+        const vendorAmountBeforeStripe = amount - marketplaceFee;
+
+        // Step 3: Stripe’s 2.9% + 0.30 fee on vendor's share
+        const stripeFee = Math.round(vendorAmountBeforeStripe * STRIPE_PERCENTAGE + STRIPE_FIXED_FEE * 100);
+
+        // Step 4: Vendor’s final payout after Stripe fees
+        const vendorPayout = vendorAmountBeforeStripe - stripeFee;
+
+        // Step 5: Create a PaymentIntent for the test charge
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount, // Total charged
+            currency: 'cad',
+            payment_method_types: ['card'],
+            confirm: true,
+            payment_method: 'pm_card_visa', // Use a test Visa card
+            application_fee_amount: marketplaceFee, // Marketplace keeps 8%
+            transfer_data: {
+                destination: vendorStripeAccount, // Send payout to vendor
+                amount: vendorPayout, // Amount vendor receives after Stripe fees
+            },
+        });
+
+        console.log('Test Payment Successful:', paymentIntent);
+        return { success: true, paymentIntent };
+    } catch (error) {
+        console.error('Test Payment Failed:', error);
+        return { success: false, error };
+    }
+}
+
+stripeRouter.post('/create-checkout-session', async (req: Request, res: Response) => {
+  const session: ClientSession = await ProductModel.startSession(); // Définir le type explicite ici
+  session.startTransaction();
+
+  try {
+    const { productItems } = req.body;
+
+    // console.log("Produits reçus :", productItems);
+
+    // Vérification du stock avant de créer la session Stripe
+    for (const item of productItems) {
+      // console.log('Item:', item);
+      const product = await ProductModel.findOne({ _id: item.productId }).session(session);
+
+      // Vérifier si le produit existe
+      if (!product) {
+        // return res.status(404).json({ error: `Product with ID ${item.productId} not found.` });
+        throw new Error(`Produit introuvable : ID ${item.productId}`);
+      }
+
+      // Vérification de la quantité en stock
+      if (product.quantity < item.quantity) {
+        return res.status(400).json({
+          error: `Insufficient stock for ${product.name}. Available: ${product.quantity}, requested: ${item.quantity}`
+        });
+      }
+    }
+
+    // Création des items pour Stripe
+    const lineItems = productItems.map((item: any) => ({
+      price_data: {
+        currency: 'cad',
+        product_data: {
+          name: item.name,
+          images: item.images,
+          metadata: {
+            productId: item._id, 
+            vendorId: item.vendorId 
+          }
+        },
+        unit_amount: Math.round(Number(item.price) * 100),
+      
+      },
+      quantity: item.quantity,
+    }));
+
+    // console.log('line items', lineItems)
+
+
+    // Création de la session de paiement Stripe
+    const stripeSession = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      success_url: `${HOME_URL}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${HOME_URL}`,
+      shipping_address_collection: {
+        allowed_countries: ['CA'], // Add allowed countries here
+      },    
+
+
+      //Enable Phone number collection
+      // phone_number_collection: {
+      //   enabled: true,
+      // },
+
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 800, // Shipping fee in cents (e.g., $8.00)
+              currency: 'cad',
+            },
+            display_name: 'Standard Shipping',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 1 },
+              maximum: { unit: 'business_day', value: 2 },
+            },
+          },
+        },
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 1500, // Expedited shipping fee (e.g., $15.00)
+              currency: 'cad',
+            },
+            display_name: 'Express Shipping',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 1 },
+            },
+          },
+        },
+      ],
+      consent_collection: {
+        terms_of_service: 'required' // This makes terms of service acceptance mandatory
+      },
+      custom_text: {
+        terms_of_service_acceptance: {
+          message: "Refund Policy:\nCustomers who place an order from outside our service area (Greater Montreal) will be eligible for a refund. Transaction fees incurred during the payment process are non-refundable and will be deducted from the total refund amount."
+        }
+      }
+
+    });
+
+    // Commit de la transaction MongoDB
+    await session.commitTransaction();
+    // console.log("Transaction MongoDB validée.");
+
+
+    // Retourner l'URL de la session de paiement
+    res.json({
+      url: stripeSession.url,
+      items: productItems.map((item: any) => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        subTotal: item.subTotal,
+      })),
+    });
+  
+
+  } catch (error) {
+    await session.abortTransaction();
+    console.error("Erreur lors de la création de session Stripe :", error);
+    res.status(500).json({ error: error instanceof Error ? error.message : 'Unknown error' });
+  } finally {
+    session.endSession();
+  }
+});
+
+
+stripeRouter.get('/success', async (req: Request, res: Response) => {
+  const sessionId = req.query.session_id as string;
+  if (!sessionId) {
+    // return res.status(400).send('Session ID is missing.');
+    return res.status(400).json({ error: "Session ID manquant." });
+  }
+
+
+  const stripeSession = await stripe.checkout.sessions.retrieve(sessionId);
+  // const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
+  const lineItems = await stripe.checkout.sessions.listLineItems(sessionId, {
+    expand: ['data.price.product'], // Pour accéder aux metadata
+  });
+  const customerEmail = stripeSession.customer_details?.email;
+  const customerAddress = stripeSession.customer_details?.address;
+
+  
+  console.log("Email client :", customerEmail);
+  console.log("Adresse client :", customerAddress);
+
+  
+  const dbSession: ClientSession = await ProductModel.startSession(); // Créer une session MongoDB
+  dbSession.startTransaction();
+  
+  try {
+    // Mettre à jour le stock après un paiement réussi
+    if (stripeSession.payment_status === 'paid') {
+      // console.log("Paiement confirmé, mise à jour du stock...");
+    
+      for (const item of lineItems.data) {
+        // console.log("Vérification de l'item :", item);
+        if (!item.quantity) {
+          console.warn(`Quantité non définie pour l'article : ${item.description}`);
+          continue;
+          
+        }
+
+
+         //  Affichage du Vendor ID depuis les metadata Stripe
+         const product = item.price?.product as Stripe.Product;
+        
+         const productId = product.metadata?.productId;
+ 
+         console.log(`Produit: ${item.description}`);
+
+        const updatedProduct = await ProductModel.findOneAndUpdate(
+          { name: item.description },
+          { $inc: { quantity: -item.quantity } }, // Décrémenter le stock
+          { session: dbSession, new: true }
+        );
+
+        if (!updatedProduct) {
+          console.warn(`Produit non trouvé : ${item.description}`);
+        } else {
+          // console.log(`Stock mis à jour pour ${updatedProduct.name} -> Nouveau stock: ${updatedProduct.quantity}`);
+        }
+      }
+    }
+    
+       // Détails de la commande
+    const orderDetails = {
+      
+        customer_email: customerEmail,
+        customer_address: customerAddress,
+        session_id: sessionId,
+        currency: stripeSession.currency,
+
+        items: lineItems.data.map(item => {
+          const product = item.price?.product as Stripe.Product;
+          const vendorId = product.metadata?.vendorId;
+        
+          return {
+            name: item.description,
+            price: mongoose.Types.Decimal128.fromString((item.amount_total / 100).toFixed(2)),
+            quantity: item.quantity,
+            subTotal: mongoose.Types.Decimal128.fromString((item.amount_total / 100).toFixed(2)),
+            // vendorId: vendorId,
+            vendorId: new mongoose.Types.ObjectId(vendorId)
+          };
+        }),
+        
+        total_amount: mongoose.Types.Decimal128.fromString((lineItems.data.reduce((total, item) => total + item.amount_total, 0) / 100).toFixed(2)),
+      
+      
+     
+      };
+
+      // console.log('order detail', orderDetails)
+
+    try {
+      const newOrder = new OrderModel(orderDetails);
+      await newOrder.save({ session: dbSession }); // Enregistrement sous transaction
+
+      const orderId = newOrder._id;
+
+      // const orderId = newOrder._id as Types.ObjectId; 
+      // console.log('orderId', orderId)
+
+ 
+    // Commit de la transaction MongoDB
+    await dbSession.commitTransaction();
+
+    const vendorsGrouped = await getOrderGroupedByVendors(orderId);
+    // console.log('Vendors Grouped:', vendorsGrouped);
+
+    for(const vendorId in vendorsGrouped){
+      const items = vendorsGrouped[vendorId];
+      const amount = items.reduce((sum, item)=> {
+        return sum + parseFloat(item.subTotal.toString());
+      }, 0) 
+
+      console.log('items vendor', items)
+      console.log('amount vendor', amount)
+
+      
+      await VendorPaymentModel.create({
+        orderId,
+        vendorId,
+        amount,
+        status: "pending",
+        items: items.map(item =>({
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          subTotal: item.subTotal,
+        }))
+      });
+    }
+
+    // console.log('commande enregistrée', JSON.stringify(newOrder, null, 2));
+
+     // Utiliser FRONTEND_URL défini dans .env du backend
+    res.redirect(`${process.env.FRONTEND_URL}/Products?success=true&orderId=${orderId}`);
+
+  } catch (saveError) {
+    console.error("Erreur lors de l'enregistrement de la commande :", saveError);
+    throw saveError; 
+  }
+    
+    // res.json({ payment_status: stripeSession.payment_status, session: stripeSession });
+  } catch (error) {
+    // Annule la transaction uniquement en cas d'erreur avant commit
+    if (dbSession.inTransaction()) {
+      await dbSession.abortTransaction();
+    }
+    res.status(500).json({ error: "Erreur de mise à jour du stock." });
+  } finally {
+    // Ferme la session MongoDB
+    dbSession.endSession();
+  }
+});
+
+
+  export const getOrderGroupedByVendors = async (orderId: any): Promise<Record<string, any[]>> => {
+  
+    let objectId: Types.ObjectId;
+  
+    try {
+      objectId = typeof orderId === 'string'
+        ? new mongoose.Types.ObjectId(orderId)
+        : orderId;
+    } catch (err) {
+      console.error("ID invalide :", err);
+      throw new Error("ID de commande invalide");
+    }
+  
+    const order = await OrderModel.findById(objectId);
+    if (!order) {
+      console.error("Commande introuvable avec l'orderId:", objectId);
+      throw new Error("Commande introuvable");
+    }
+  
+    const groupedByVendor = groupItemsByVendor(order.items);
+    return groupedByVendor;
+  };
+  
+
+// Fonction pour grouper les articles par vendeur
+const groupItemsByVendor = (items: any[]) => {
+  return items.reduce((groups, item) => {
+    const vendorId = item.vendorId.toString(); // Convertir l'ObjectId en chaîne pour grouper
+    if (!groups[vendorId]) {
+      groups[vendorId] = [];
+    }
+    groups[vendorId].push(item);
+    return groups;
+  }, {});
+};
+
+
+
+stripeRouter.get("/orders/:sessionId", async (req, res) => {
+  const sessionId = req.params.sessionId;
+  // console.log('session Id', sessionId);
+
+  if (!sessionId) {
+    return res.status(400).json({ error: "Session ID manquant." });
+  }
+
+  try {
+    // const order = await OrderModel.findOne({ session_id: sessionId });
+    const order = await OrderModel.findOne({ _id: new mongoose.Types.ObjectId(sessionId) });
+    
+
+    // console.log('order', order)
+
+    if (!order) {
+      return res.status(404).json({ error: "Commande non trouvée." });
+    }
+
+    res.json(order);
+  } catch (error) {
+    console.error("Erreur lors de la récupération de la commande :", error);
+    res.status(500).json({ error: "Erreur serveur." });
+  }
+});
+
+
+stripeRouter.post('/pay-vendor', async (req: Request, res: Response) => {
+  const { orderId, vendorId } = req.body;
+
+  try {
+    // Chercher un paiement du vendeur
+    const vendorPayment = await VendorPaymentModel.findOne({ orderId, vendorId });
+
+    if (!vendorPayment || vendorPayment.status === 'paid') {
+      return res.status(404).json({ error: 'Paiement introuvable ou déjà payé' });
+    }
+
+    const amountInCents = parseFloat(vendorPayment.amount.toString()) * 100;
+    console.log('amount incents', amountInCents)
+
+    // 1. Créer un compte vendeur Stripe Connect s'il n'existe pas déjà
+    const account = await stripe.accounts.create({
+      type: 'standard',  // Peut aussi être 'custom', selon ton besoin
+    });
+
+    // 2. Créer un PaymentIntent sur ton compte principal
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amountInCents,
+      currency: 'cad',  // Devise canadienne
+      payment_method_types: ['card'],
+      application_fee_amount: Math.round(amountInCents * 0.08),  // Commission de 8 %
+      transfer_data: {
+        destination: account.id,  // Le compte du vendeur
+      },
+      metadata: {
+        orderId,
+        vendorId,
+      },
+    });
+
+    // 3. Confirmer le PaymentIntent
+    const confirmedPaymentIntent = await stripe.paymentIntents.confirm(paymentIntent.id);
+
+    if (confirmedPaymentIntent.status === 'succeeded') {
+      // 4. Effectuer un virement (Payout) vers le compte vendeur
+      const payoutAmount = Math.round(amountInCents * 0.92);  // Montant après la commission
+
+      const payout = await stripe.payouts.create({
+        amount: payoutAmount,  // Montant à envoyer au vendeur
+        currency: 'cad',
+      }, {
+        stripeAccount: account.id,  // Utiliser le compte Stripe du vendeur
+      });
+
+      // 5. Mettre à jour le statut du paiement
+      vendorPayment.status = 'paid';
+      await vendorPayment.save();
+
+      // 6. Renvoi d'une réponse JSON indiquant le succès
+      return res.status(200).json({ success: true, orderId });
+    } else {
+      return res.status(400).json({ error: 'Échec du paiement' });
+    }
+  } catch (err) {
+    console.error('Erreur :', err);
+    return res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+
+
+
+
+export default stripeRouter;

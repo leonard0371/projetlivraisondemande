@@ -1,0 +1,3 @@
+D:\Projects\Montreal.Commerce\Montreal.Commerce\obj\Debug\Montreal.Commerce.njsproj.AssemblyReference.cache
+D:\Projects\Montreal.Commerce\Montreal.Commerce\obj\Debug\Montreal.Commerce.njsproj.CoreCompileInputs.cache
+D:\Projects\Montreal.Commerce\Montreal.Commerce\bin\Microsoft.NodejsTools.WebRole.dll

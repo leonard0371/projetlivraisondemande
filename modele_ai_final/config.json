@@ -1,0 +1,24 @@
+{
+  "csv_path": "data.csv",
+  "seq_len": 14,
+  "features": [
+    "quantite_totale",
+    "nb_commandes",
+    "dow",
+    "mois",
+    "is_weekend"
+  ],
+  "d_model": 256,
+  "nhead": 8,
+  "num_layers": 6,
+  "batch_size": 512,
+  "epochs": 100,
+  "lr": 0.0002,
+  "max_lr": 0.001,
+  "patience": 10,
+  "loss_weights": {
+    "quant": 0.6,
+    "class": 0.2
+  },
+  "reward_thresh": 0.7
+}

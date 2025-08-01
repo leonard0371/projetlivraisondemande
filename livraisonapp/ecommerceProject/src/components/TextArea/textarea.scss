@@ -1,0 +1,23 @@
+$primary-color: rgba(49, 83, 154, 1);
+.text-area {
+  .form-control {
+    border-width: 0 0 1.5px 0;
+    background-color: transparent;
+    margin-bottom: 10px;
+    border-radius: 0px;
+    border-color: black;
+
+    &:focus {
+      box-shadow: none;
+      outline: none;
+      border-bottom: 2.5px solid $primary-color;
+      // border-width: 0;
+      background-color: transparent;
+    }
+  }
+}
+// textarea:focus {
+//   outline: none;
+//   box-shadow: none;
+//   border-bottom: 2.5px solid $primary-color;
+// }

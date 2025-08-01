@@ -1,0 +1,54 @@
+$primary-color: rgba(49, 83, 154, 1);
+
+.form-card {
+    height: fit-content;
+    width: 55vh;
+    background-color: white;
+    margin-left: 20%;
+    margin-top: 15vh;
+    border-radius: 25px;
+    padding: 2.5% 5%;
+    justify-content: center;
+    align-items: center;
+
+    p {
+        font-size: 12px;
+        font-weight: 200;
+        color: $primary-color;
+
+        a {
+            cursor: pointer;
+        }
+    }
+}
+// @keyframes form-card {
+//     from {
+//       transform: rotate(0deg);
+//     }
+//     to {
+//       transform: rotate(180deg);
+//     }
+//   }
+  
+.login-main {
+    height: 100vh;
+    overflow-x: hidden;
+}
+.login-btn {
+    display: flex;
+    font-size: 10px;
+    font-weight: 200;
+    color: $primary-color;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+@media (max-width :800px ) {
+    .form-card{
+        margin-left: 6%;
+    // margin-top: 50%;
+    margin-top: 15vh;
+
+    width: 40vh;
+    }
+}

@@ -1,0 +1,101 @@
+.layout-component {
+    .pageContainer {
+        width: 100% !important;
+    }
+
+    .side-bar-container {
+        margin: 0 !important;
+        width: 20rem;
+        height: 110vh;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 2% 5% 2%;
+
+        // background: linear-gradient(white, $second-primary-color 60%) !important;
+
+        svg {
+            cursor: pointer;
+
+            &:hover {
+                font-size: 16px;
+            }
+        }
+
+        .sidebar-main-div {
+            justify-content: center;
+
+        }
+
+        .patient-image-sidebar {
+            margin-left: auto;
+            margin-right: auto;
+            // border: 1px solid $background-color;
+            height: 150px;
+            width: 150px;
+            object-fit: contain;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            // background-color: $light-background-color;
+
+        }
+
+        .patient-name-sidebar {
+            // color: $primary-color !important;
+            text-transform: capitalize;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .footer-icon-container {
+            span {
+                display: flex;
+
+            }
+
+            li {
+                list-style: none;
+                display: flex;
+                font-size: 1rem;
+                padding: 3px;
+            }
+        }
+
+
+
+    }
+
+
+}
+
+.sideBarPadding {
+    padding: 0px 10px 0px !important;
+
+}
+
+.sidebar-main-div {
+
+    // padding: 0px 10px 0px !important;
+    .nav-hamberg-icon {
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-width:900px) {
+    .layout-component {
+
+        .side-bar-container {
+            z-index: 99999999;
+            position: absolute;
+        }
+
+    }
+}
+
+// .showSidebarMenu{
+//     background:linear-gradient(white, $second-primary-color 60%);
+//     color: white;
+
+//     .sidebar-main-div{
+
+//     }
+// }

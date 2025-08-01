@@ -1,0 +1,25 @@
+$primary-color: rgba(49,83,154,1);
+
+.button-styling{
+    border-radius: 0px;
+    // background-color: #AA2F33 ;
+    background-color: #64B5F6;
+    color: aliceblue;
+    padding: 6px 20px 6px 20px;
+    
+}
+.disabled-button{
+    border-radius: 0px;
+    // background-color: #aa4f52 ;
+    background-color: #1663a1;
+    color: aliceblue;
+    padding: 6px 20px 6px 20px;
+    
+}
+.secondary-button{
+    background-color: white;
+    color: $primary-color;
+    padding: 6px 20px 6px 20px;
+    border: 3px solid $primary-color;
+    border-radius: 0px;
+}

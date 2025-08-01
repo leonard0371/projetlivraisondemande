@@ -1,0 +1,28 @@
+
+$primary-color: rgba(49,83,154,1);
+
+.checkbox-style {
+    display: flex;
+    align-items: center;
+  
+    input[type="checkbox"] {
+      // accent-color: $primary-color;
+      cursor: pointer;
+    }
+  
+    label {
+      padding-left: 5px;
+      font-weight: 300;
+      // color: $primary-color;
+    }
+  
+    .checkbox-label {
+      font-size: 14px;
+    }
+  
+    .disabled-checkbox {
+      &:hover {
+        cursor: default;
+      }
+    }
+  }

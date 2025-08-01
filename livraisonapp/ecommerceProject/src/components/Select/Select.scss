@@ -1,0 +1,364 @@
+// // @import "../../variables.scss";
+.rs-picker-toggle {
+  max-width: 98% !important;
+
+}
+
+.rs-picker-focuse {
+  border: none !important;
+}
+
+.rs-picker-toggle-value {
+  color: black !important;
+}
+
+.rs-picker-input {
+  border: none !important;
+  border-bottom: 2px solid black !important;
+  background-color: transparent;
+  margin-bottom: 10px;
+  border-radius: 0px !important;
+  border-color: black;
+
+  &:focus {
+    border: none !important;
+  }
+
+
+}
+
+// .rs-picker-default .rs-btn,
+// .rs-picker-default .rs-picker-toggle {
+//   transition: none !important;
+// }
+
+// .rs-picker-default .rs-picker-toggle {
+//   z-index: 0 !important;
+// }
+
+// .rs-picker-select-menu.rs-picker-select-menu-items {
+//   max-height: 150px !important;
+// }
+
+// .select-container {
+//   .rs-picker-select-menu .rs-picker-menu {
+//     min-width: fit-content;
+//   }
+// }
+
+// .rs-picker-menu.rs-picker-select-menu,
+// .rs-picker-popup {
+//   z-index: 1055 !important;
+//   scrollbar-width: auto;
+
+//   &::-webkit-scrollbar {
+//     margin-top: 18px;
+//     width: 5px;
+//     background-color: white;
+//     padding-top: 2px;
+//   }
+
+//   &::-webkit-scrollbar-thumb {
+//     // background-color: $primary-color;
+//   }
+// }
+
+// .rs-picker-toggle-caret {
+//   padding: 0px !important;
+// }
+
+// .rs-picker-select-menu-item-active {
+//   background-color: #f2faff !important;
+//   color: #1675e0 !important;
+// }
+
+// .rs-picker-select-menu-item.rs-picker-select-menu-item-focus {
+//   // background-color: transparent !important;
+//   background-color: #f2faff !important;
+//   color: #1675e0 !important;
+
+//   &:hover {
+//     background-color: #e5f4ff !important;
+//     color: #1675e0 !important;
+//   }
+
+// }
+
+// .rs-picker-select-menu-item.rs-picker-select-menu-item-active.rs-picker-select-menu-item-focus {
+//   background-color: #e5f4ff !important;
+//   color: #1675e0 !important;
+// }
+
+// .rs-picker.rs-picker-focused {
+//   border-bottom: 1px solid !important;
+// }
+
+// .rs-picker-caret-icon {
+//   top: 5px !important;
+// }
+
+// .rs-picker-input .rs-picker-toggle {
+//   height: unset !important;
+// }
+
+// .rs-picker-textbox {
+//   min-height: unset !important;
+// }
+
+// .rs-picker-default .rs-picker-toggle.rs-btn {
+//   padding: 0px !important;
+// }
+
+// .rs-picker-search-input {
+//   padding: 0px !important;
+// }
+
+// .rs-picker-select-menu-item {
+//   font-size: 12px !important;
+//   line-height: 1 !important;
+
+// }
+
+// .select-container {
+//   padding-top: 5px;
+//   // position: relative;
+//   display: flex;
+//   // width: 100%;
+
+//   .rs-btn {
+//     border: none !important;
+//   }
+
+//   // .rs-picker-toggle-value {
+//   //   width: 150px;
+//   //   overflow: ellipsis;
+//   //   transition: all 1s ease-in-out;
+
+//   //   &:hover {
+//   //     text-overflow: visible;
+//   //     white-space: normal;
+//   //     height: auto;
+//   //     position: relative;
+//   //     top: 0;
+//   //     /* just added this line */
+//   //   }
+//   // }
+
+//   .rs-picker-has-value .rs-btn .rs-picker-toggle-value,
+//   .rs-picker-has-value .rs-picker-toggle .rs-picker-toggle-value {
+//     color: black !important;
+//     font-size: 12px !important;
+//     // white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     max-width:90%;
+// // max-width: 100%;
+//   }
+
+//   .rs-picker-toggle .rs-picker-toggle-placeholder {
+//     font-size: 12px !important;
+//   }
+
+//   .rs-picker-default .rs-picker-toggle.rs-btn .rs-picker-toggle-caret {
+//     top: 5px !important;
+//   }
+
+//   .rs-picker-toggle-caret {
+//     padding-bottom: 4px !important;
+//   }
+
+//   .rs-btn-close .rs-icon {
+//     margin-bottom: 10px !important;
+//     font-size: 10px !important;
+//   }
+
+//   .rs-picker.rs-picker:active {
+//     border-bottom: 1px solid 
+//     // $inputBottomColor 
+//     !important;
+//   }
+
+//   .rs-picker-default.rs-picker-disabled .rs-btn,
+//   .rs-picker-default.rs-picker-disabled .rs-picker-toggle {
+//     background-color: #e9ecef !important;
+//     border-radius: 0px !important;
+//   }
+
+//   .rs-picker-disabled {
+//     opacity: 1 !important;
+//     border-radius: 0px !important;
+//   }
+
+//   &.label-side {
+//     flex-direction: column;
+//   }
+
+//   select {
+//     .selected-option-color {
+//       color: black; // color of the selected option
+//       font-weight: light;
+//     }
+//   }
+
+//   .labelColor {
+//     // color: $inputBottomColor;
+//     // font-weight: lighter !important;
+//     font-size: 13px !important;
+//   }
+
+//   .disable {
+//     pointer-events: none;
+//     background-color: #e9ecef !important;
+//   }
+
+//   label {
+//     color: #858585 !important;
+//     font-weight: 100 !important;
+//     font-size: 14px;
+//   }
+
+//   .focused-label {
+//     color: #1e3a8a !important;
+//     font-weight: bold !important;
+//   }
+
+//   .error-message {
+//     font-size: 0.8em;
+//   }
+
+//   .input-error {
+//     outline: none;
+//     border-bottom: 1px solid #dc3545 !important;
+//   }
+
+//   .css-b62m3t-container {
+//     width: 100%;
+//   }
+
+//   select,
+//   .css-13cymwt-control,
+//   .css-t3ipsp-control {
+//     width: 100%;
+//     border-top: none;
+//     border-left: none;
+//     border-right: none;
+//     border-radius: 0px;
+//     border-bottom: 1px solid 
+//     // $inputBottomColor
+//     ;
+//     box-shadow: none;
+//   }
+
+//   select:focus,
+//   .css-13cymwt-control:focus,
+//   .css-t3ipsp-control:focus {
+//     outline: none;
+//     border-bottom: 2px solid 
+//     // $inputFocusColour
+//     ;
+//   }
+
+//   .css-13cymwt-control:hover,
+//   .css-t3ipsp-control:hover {
+//     border-bottom: 1px solid 
+//     // $inputBottomColor
+//     ;
+//   }
+
+//   select:disabled {
+//     background-color: #e9ecef !important;
+//   }
+
+//   .selectColor {
+//     color: black;
+//   }
+
+//   .selectColor:hover {
+//     color: white !important;
+//     background-color: #dc3545 !important;
+//     cursor: pointer !important;
+//   }
+// }
+
+// .css-13cymwt-control,
+// .css-t3ipsp-control {
+//   font-size: 13px;
+//   // min-height: unset !important;
+// }
+
+// .multi-input-error {
+
+//   .css-13cymwt-control,
+//   .css-t3ipsp-control {
+//     outline: none;
+//     border-bottom: 1px solid #dc3545 !important;
+//   }
+// }
+
+// // .selectLabel {
+// //   margin-bottom: 6px;
+// // }
+
+// .css-qbdosj-Input {
+//   margin: 0px;
+// }
+
+// .css-1xc3v61-indicatorContainer,
+// .css-15lsz6c-indicatorContainer {
+//   padding-top: 0px !important;
+//   padding-bottom: 0px !important;
+// }
+
+// .css-3w2yfm-ValueContainer,
+// .css-1fdsijx-ValueContainer {
+//   padding: 1px 0px !important;
+// }
+
+// .css-1nmdiq5-menu {
+//   div {
+//     &::-webkit-scrollbar {
+//       width: 5px;
+//       padding-top: 2px;
+//     }
+
+//     &::-webkit-scrollbar-thumb {
+//     //   background: $primary-color;
+//     }
+//   }
+// }
+
+// .css-14h4o58-menu {
+//   div {
+//     &::-webkit-scrollbar {
+//       width: 5px;
+//       padding-top: 2px;
+//     }
+
+//     &::-webkit-scrollbar-thumb {
+//     //   background: $primary-color;
+//     }
+//   }
+// }
+
+// .rs-picker-select-menu-items {
+//   overflow-y: scroll;
+//   // scrollbar-width: thin;
+
+//   &::-webkit-scrollbar {
+//     width: 5px;
+//     padding-top: 2px;
+//   }
+
+//   &::-webkit-scrollbar-thumb {
+//     // background-color: $primary-color;
+//   }
+// }
+
+// .css-1xc3v61-indicatorContainer,
+// .css-15lsz6c-indicatorContainer:hover {
+//   cursor: pointer;
+// }
+.rs-picker-input {
+  padding: 7px;
+  border: 0px 0px 5px 0px solid black;
+}

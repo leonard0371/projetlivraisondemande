@@ -1,0 +1,201 @@
+.products-page {
+  padding-top: 20px;
+  
+  .content-container {
+    padding: 0 15px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .search-container {
+    width: 100%;
+  }
+  
+  .categories-container {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    
+    .categories-header {
+      border-bottom: 1px solid #e1e1e1;
+      padding-bottom: 10px;
+      
+      h5 {
+        color: #333;
+        font-weight: 600;
+      }
+      
+      /* Toggle button styling */
+      .toggle-categories-btn {
+        background: none;
+        border: none;
+        color: #555;
+        padding: 0.25rem 0.5rem;
+        margin-top: -2px;
+        cursor: pointer;
+        transition: color 0.2s ease;
+        
+        &:hover {
+          color: #AA2F33;
+        }
+      }
+    }
+    
+    .category-section {
+      border-bottom: 1px solid #e8e8e8;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      .category-header {
+        padding: 12px 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 500;
+        color: #333;
+        transition: background-color 0.2s ease;
+        
+        &:hover {
+          background-color: #f0f0f0;
+        }
+        
+        .toggle-icon {
+          color: #AA2F33;
+        }
+      }
+      
+      .subcategories-container {
+        padding: 0 10px 15px;
+        
+        .subcategories-row {
+          margin-left: -5px;
+          margin-right: -5px;
+        }
+        
+        .subcategory-button {
+          font-size: 0.85rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          border-radius: 4px;
+          text-align: left;
+          padding: 6px 10px;
+          
+          &.btn-primary {
+            background-color: #AA2F33;
+            border-color: #AA2F33;
+            
+            &:hover, &:focus {
+              background-color: darken(#AA2F33, 10%);
+              border-color: darken(#AA2F33, 10%);
+            }
+          }
+          
+          &.btn-outline-secondary {
+            color: #555;
+            border-color: #ccc;
+            
+            &:hover {
+              background-color: #f8f8f8;
+              color: #333;
+            }
+          }
+        }
+        
+        .no-subcategories {
+          font-size: 0.9rem;
+          color: #777;
+          padding: 10px 0;
+          margin: 0;
+        }
+      }
+    }
+  }
+  
+  .active-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    h6 {
+      margin: 0;
+      color: #555;
+      font-weight: 600;
+    }
+    
+    .filter-badge {
+      background-color: #AA2F33;
+      font-weight: normal;
+      font-size: 0.875rem;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      .remove-filter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        color: white;
+        padding: 2px;
+        cursor: pointer;
+        opacity: 0.8;
+        
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+  
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+  }
+  
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    
+    .pagination {
+      .page-item {
+        &.active .page-link {
+          background-color: #AA2F33;
+          border-color: #AA2F33;
+        }
+        
+        .page-link {
+          color: #333;
+          
+          &:focus {
+            box-shadow: 0 0 0 0.25rem rgba(170, 47, 51, 0.25);
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .products-page {
+    .category-section {
+      .subcategories-container {
+        .subcategory-button {
+          font-size: 0.8rem;
+          padding: 5px 8px;
+        }
+      }
+    }
+  }
+}
