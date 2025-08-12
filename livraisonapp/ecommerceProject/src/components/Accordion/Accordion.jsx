@@ -15,7 +15,7 @@ function FAQAccordion({ data, index }) {
             {isRefundPolicy ? (
               <div className="refund-policy">
                 <p className="mb-3">
-                  At Montreal Haven, we strive to ensure a smooth shopping experience. However, if an order is placed from outside the <strong>Montreal Metropolitan Area</strong>, the following refund policy applies:
+                  At Montreal Livraison Express, we strive to ensure a smooth shopping experience. However, if an order is placed from outside the <strong>Montreal Metropolitan Area</strong>, the following refund policy applies:
                 </p>
                 <ul className="ps-4 mb-3">
                   <li className="mb-2">

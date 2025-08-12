@@ -210,8 +210,8 @@ function NavBar({ onClick }) {
             >
               
             <img 
-              src={logoImage} 
-              alt="MontrealHaven Logo" 
+              // src={} 
+              alt="Montreal Logo" 
               style={{ 
                 maxHeight: '40px', 
                 maxWidth: '250px', 
@@ -291,20 +291,20 @@ function NavBar({ onClick }) {
                     Start Selling
                   </NavLink>
                 )}
-                <NavLink 
+                {/* <NavLink 
                   to="/contact" 
                   className="nav-link" 
                   onClick={handleNavLinkClick}
                 >
                   Service Hub
-                </NavLink>
-                <NavLink 
+                </NavLink> */}
+                {/* <NavLink 
                   to="/about" 
                   className="nav-link" 
                   onClick={handleNavLinkClick}
                 >
                   Our Story
-                </NavLink>
+                </NavLink> */}
                 {role !== "driver" && (
                   <NavLink
                     to="/driver-registration"

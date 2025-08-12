@@ -257,13 +257,13 @@ return (
                   </div>
 
                   <div className="text-center mt-6">
-                    <p className="text-gray-600">New to Montreal Haven?</p>
+                    <p className="text-gray-600">New to Montreal Livraison Express?</p>
                     <button
                       type="button"
                       onClick={toggleForm}
                       className="mt-4 bg-black text-white px-8 py-2 rounded hover:bg-gray-800 w-full"
                     >
-                      Create Your Montreal Haven Account
+                      Create Your Montreal Livraison Express Account
                     </button>
                   </div>
                 </form>
