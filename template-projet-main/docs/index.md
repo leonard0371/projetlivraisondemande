@@ -21,10 +21,16 @@
 
 ### Contexte
 
+Le marché québécois de livraison alimentaire a explosé de 300% depuis 2019, mais les systèmes actuels restent inefficaces avec des délais fixes de 30-60 minutes basés sur un modèle purement réactif (commande → préparation → livraison).
+
 ### Problématique ou motivations
+
+Les plateformes existantes sous-exploitent les données historiques et ignorent les patterns de demande prévisibles, causant des trajets sous-optimaux, un gaspillage de produits périssables (12-18% de pertes), et une centralisation inefficace des livreurs qui augmente de 40% les distances parcourues. Le manque de prédiction de produits possibles pouvant être commandé, par rapport à l'historique de commande, entraîne une rigidité et un manque d'adaptation du système.
+
 
 ### Proposition et objectifs
 
+Développer un système de livraison prédictive utilisant l'intelligence artificielle (Transformer multi-tâches) pour anticiper la demande quotidienne et positionner proactivement les livreurs, transformant le paradigme réactif en approche prédictive pour réduire les délais et optimiser la gestion des produits périssables montréalais.
 
 ## Échéancier
 
@@ -33,16 +39,16 @@
 
 | Jalon (*Milestone*)            | Date prévue   | Livrable                            | Statut      |
 |--------------------------------|---------------|-------------------------------------|-------------|
-| Ouverture de projet            | 1 mai         | Proposition de projet               | ✅ Terminé  |
-| Analyse des exigences          | 16 mai        | Document d'analyse                  | 🔄 En cours |
-| Prototype 1                    | 23 mai        | Maquette + Flux d'activités         | ⏳ À venir  |
-| Prototype 2                    | 30 mai        | Prototype finale + Flux             | ⏳ À venir  |
-| Architecture                   | 30 mai        | Diagramme UML ou modèle C4          | ⏳ À venir  |
-| Modèle de donneés              | 6 juin        | Diagramme UML ou entité-association | ⏳ À venir  |
-| Revue de conception            | 6 juin        | Feedback encadrant + ajustements    | ⏳ À venir  |
-| Implémentation v1              | 20 juin       | Application v1                      | ⏳ À venir  |
-| Implémentation v2 + tests      | 11 juillet    | Application v2 + Tests              | ⏳ À venir  |
-| Implémentation v3              | 1er août      | Version finale                      | ⏳ À venir  |
-| Tests                          | 11-31 juillet | Plan + Résultats intermédiaires     | ⏳ À venir  |
-| Évaluation finale              | 8 août        | Analyse des résultats + Discussion  | ⏳ À venir  |
-| Présentation + Rapport         | 15 août       | Présentation + Rapport              | ⏳ À venir  |
+| Ouverture de projet            | 3 mai         | Proposition de projet               | ✅ Terminé  |
+| Analyse des exigences          | 16 mai        | Document d'analyse                  | ✅ Terminé  |
+| Documentation                    | 23 mai        | Document de cohérence des données + cahier de charge  | ✅ Terminé  |
+| Faker + gen des données synthétiques  | 30 mai   | Document de cohérence et cahier de charge             | ✅ Terminé  |
+| Architecture web + modèle de donnée  | 30 mai        | FE + BE + DB                   | ✅ Terminé  |
+| FE + BE developpement              | 6 juin        | FE + BE + DB                     | ✅ Terminé  |
+| FE + BE developpement              | 6 juin        | FE + BE + DB                     | ✅ Terminé  |
+| FE + BE developpement              | 6 juin        | FE + BE + DB                     | ✅ Terminé  |
+| FE + BE developpement              | 6 juin        | FE + BE + DB                     | ✅ Terminé  |
+| FE + BE developpement + inférence + entrainement du modèle IA            | 6 juin        | FE + BE + DB                     | ✅ Terminé  |
+| Code inférence python + entrainement du modèle IA  | 11-31 juillet | Ajouter les tests unitaires    | ✅ Terminé  |
+| Terminaison des tests unitaires + finir rapport | 8 août        | Analyse des résultats + Discussion  | ✅ Terminé  |
+| Finaliser rapport + se préparer pour la présentation        | 15 août       | Présentation + Rapport              | ✅ Terminé  |
