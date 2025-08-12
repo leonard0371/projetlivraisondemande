@@ -1,8 +1,8 @@
 # Projet IFT3150: Nom du projet
 
-> **Thèmes**: Science de données, Génie logiciel  
-> **Superviseur**: Nom du supervisuer  
-> **Collaborateurs:** Nom de(s) collaborateur(s) et partenaire(s)
+> **Thèmes**: Science de données, Intelligence artificielle et développement web
+> **Superviseur**: Fabian Bastin
+> **Collaborateurs:** Aucun
 
 ## Informations importantes
 
@@ -14,8 +14,8 @@
 
 ## Équipe
 
-- Alice Dupont: Responsable de...
-- Bob Tremblay: Responsable de...
+- Léonard Benamara
+- Aiman Mohammed Rahmani
 
 ## Description du projet
 
