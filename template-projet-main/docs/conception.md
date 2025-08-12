@@ -41,16 +41,13 @@ Modèle de données principal
 Users (1) ←→ (N) Orders ←→ (N) Products ←→ (1) Vendors
 Orders (N) ←→ (1) Deliveries ←→ (1) DeliveryPerson
 
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   React Client  │────│  Express API    │────│    MongoDB      │
-│   (Frontend)    │    │   (Backend)     │    │   (Database)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                                │
-                                ▼
-                       ┌─────────────────┐
-                       │  Python ML      │
-                       │  (AI/Inference) │
-                       └─────────────────┘
+React Client (Frontend) -> Express API (Backend) -> MongoDB (Database)
+                                |
+                                |
+                                |
+                                v
+                        Python ML (AI/ Inference)
+
 
 Flux de données prédictif
 
