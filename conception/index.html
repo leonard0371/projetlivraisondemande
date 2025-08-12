@@ -752,16 +752,12 @@ Libraries : Scikit-learn, NumPy, Pandas, Faker pour génération données</p>
 <p>Modèle de données principal</p>
 <p>Users (1) ←→ (N) Orders ←→ (N) Products ←→ (1) Vendors
 Orders (N) ←→ (1) Deliveries ←→ (1) DeliveryPerson</p>
-<p>┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   React Client  │────│  Express API    │────│    MongoDB      │
-│   (Frontend)    │    │   (Backend)     │    │   (Database)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                                │
-                                ▼
-                       ┌─────────────────┐
-                       │  Python ML      │
-                       │  (AI/Inference) │
-                       └─────────────────┘</p>
+<p>React Client (Frontend) -&gt; Express API (Backend) -&gt; MongoDB (Database)
+                                |
+                                |
+                                |
+                                v
+                        Python ML (AI/ Inference)</p>
 <p>Flux de données prédictif</p>
 <p>Acheteur achète un produit -&gt; S'ajoute aux jeu de données Historiques → Générateur Synthétique → Entraînement Transformer → 
 Modèle Sauvegardé → Inférence Quotidienne → Dashboard Livreur → Positionnement par arrondissement optimal + catégories de produits avec poids statistique de se faire commander.</p>
