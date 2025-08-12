@@ -16,16 +16,16 @@ export class CategoryController {
   async getAllCategories(req: Request, res: Response): Promise<void> {
     try {
       const categories = {
-        "👕Apparel & Fashion": ["Casual Wear", "Streetwear","Accessories & Jewelry", "Formal & Office", "Sportswear", "Footwear", "Fashion", "Swimwear"],
-        "🧴 Beauty & Personal Care": ["Skincare", "Haircare", "Makeup", "Fragrances", "Beauty Tools & Accessories", "Body Care", "Men’s Grooming"],
-        "🎧 Tech & Electronics": ["Phones & Accessories", "Photography & Cameras", "Computers & Tablets", "Audio & Headphones", "Wearables", "Monitors & Displays", "Gaming"],
-        "🧶 Artisanry": ["Handmade Jewelry", "Pottery & Ceramics", "Knitted & Sewn Goods", "Woodwork & Leathercraft", "Artisan Home Decor"],
-        "🎓 Campus Merch": ["UdeM Merch", "McGill Merch", "Concordia Merch", "HEC, Poly, or ETS Merch", "College Essentials"],
-        "🍪 Food & Snacks": ["Food Essential", "Homemade Goods", "Gym Fuel", "Sweets", "Healthy Snacks"],
-        "♻️ Thrift & Secondhand": ["Secondhand Fashion", "Upcycled Goods", "Eco-Friendly Products", "Books", "Equipment", "Other"],
-        "🎨 Art & Collectibles": ["Artwork", "Prints & Posters", "Trading Cards", "Pop Culture Items", "Vintage Collectibles"],
-        "📚 Books": ["Fiction", "Non-fiction", "Textbooks", "Educational", "Comics & Graphic Novels", "Children's Books", "Special Editions & Collectibles"],
-        "Haven Spotlight": ["Featured Haven Vendors", "Haven Brands"],
+        "🥛Produits laitiers": ["Yogurt", "Sans lactose", "Lait"],
+        "Boulangerie": ["Chocolatine", "Gateaux", "Pain baguette"],
+        "Fruit et légumes": ["Fruits", "Legumes"],
+        "Viandes et Charcuteries": ["Handmade Jewelry", "Pottery & Ceramics", "Knitted & Sewn Goods", "Woodwork & Leathercraft", "Artisan Home Decor"],
+        "Plats préparés": ["Cuisine canadienne", "Cuisine francaise", "Cuisine algerienne", "Cuisine marocaine"],
+        // "🍪 Food & Snacks": ["Food Essential", "Homemade Goods", "Gym Fuel", "Sweets", "Healthy Snacks"],
+        // "♻️ Thrift & Secondhand": ["Secondhand Fashion", "Upcycled Goods", "Eco-Friendly Products", "Books", "Equipment", "Other"],
+        // "🎨 Art & Collectibles": ["Artwork", "Prints & Posters", "Trading Cards", "Pop Culture Items", "Vintage Collectibles"],
+        // "📚 Books": ["Fiction", "Non-fiction", "Textbooks", "Educational", "Comics & Graphic Novels", "Children's Books", "Special Editions & Collectibles"],
+        // "Haven Spotlight": ["Featured Haven Vendors", "Haven Brands"],
         // HomeServices:["Plumbing", "Landscaping", "Others"],
         // Services: [
         //   "Home services",
